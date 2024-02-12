@@ -102,11 +102,11 @@ model.classifier = nn.Sequential(
 ```
 
 ## Training results
-The summary of both models hyperparameters is shown as follows:\ 
+The summary of both models hyperparameters is shown as follows:\
 **Batch size**: 128\
 **Epochs**: 45\
 **Input Shape**: (224,224,3)\
-**Output layer**: 525\
+**Output layer**: 525
 
 ### BirdCNN Learning Curve
 
