@@ -7,6 +7,9 @@ This project demonstrates the practical application of convolutional neural netw
 ## Dataset
 The models were trained and evaluated using a dataset sourced from Kaggle (https://www.kaggle.com/datasets/gpiosenka/100-bird-species), specifically designed for image classification tasks and includes a diverse collection of high-quality images (224x224x3) spanning 525 different bird species.
 
+**Displayed samples of data**:
+![image](https://github.com/stearsail/Bird_classifier/assets/129506811/b92a9b82-1e62-4e94-88bb-e69f8ed27435)
+
 ### Data Preproccesing
 The dataset was first loaded using the 'ImageFolder' class, which automatically labels all images based on file names and facilitates an organized structure for model training.
 Several transformations were applied to the dataset to optimize model performance and generalization, these included resizing to maintain consistency and a combination of augmentation techniques to introduce variability.
