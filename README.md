@@ -35,13 +35,15 @@ data_transforms = {
 
 The data is then divided into training, validation and test sets with DataLoader instances to allow batch processing and data shuffling for the training and validation phases, and orderly processing in the test phase.
 
-`train_set = CustomDataset(train_subset, transform=data_transforms['train'])`\
-`val_set = CustomDataset(val_subset, transform=data_transforms['valid'])`\
-`test_set = CustomDataset(test_subset, transform=data_transforms['test'])`
+```
+    train_set = CustomDataset(train_subset, transform=data_transforms['train'])
+    val_set = CustomDataset(val_subset, transform=data_transforms['valid'])
+    test_set = CustomDataset(test_subset, transform=data_transforms['test'])
 
-`train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True,drop_last=True, num_workers=4)`\
-`val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True,drop_last=True, num_workers=4)`\
-`test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=False, num_workers=4)`
+    train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True,drop_last=True, num_workers=4)
+    val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True,drop_last=True, num_workers=4)
+    test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=False, num_workers=4)
+```
 
 ## Models
 ### Custom CNN Model (BirdCNN)
@@ -49,6 +51,9 @@ The custom CNN Model, features a sequential architecture that includes multiple 
 We incorporate ReLU acitvation for non-linearity, dropout for regularization and batch normalization to accelerate training.
 
 ```
+class BirdCNN(nn.Module):
+    def __init__(self, num_classes):
+        super().__init__()
         self.conv1 = nn.Conv2d(in_channels=3 , out_channels=16, kernel_size=(3,3), stride=(2,2), padding=(1,1))
         self.pool1 = nn.MaxPool2d(kernel_size=(2,2),stride=(2,2))
         self.dropout1 = nn.Dropout(p=0.1)
@@ -95,4 +100,19 @@ model.classifier = nn.Sequential(
     nn.Linear(in_features=512, out_features=525)
 )
 ```
+
+## Training results
+The summary of both models hyperparameters is shown as follows: 
+**Batch size**: 128
+**Epochs**: 75
+**Input Shape**: (224,224,3)
+**Output layer**: 525
+
+### BirdCNN Learning Curve
+
+![BIRDCNN](https://github.com/stearsail/Bird_classifier/assets/129506811/3d076bb7-b230-43af-b733-ae6288319175)
+
+### EfficientNetB0 Learning Curve
+
+![EFFICIENTNET](https://github.com/stearsail/Bird_classifier/assets/129506811/39452ea5-7d3d-48fa-b872-2c662bb91559)
 
