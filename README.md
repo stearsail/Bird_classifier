@@ -116,3 +116,35 @@ The summary of both models hyperparameters is shown as follows:\
 
 ![EFFICIENTNET](https://github.com/stearsail/Bird_classifier/assets/129506811/39452ea5-7d3d-48fa-b872-2c662bb91559)
 
+### Model evaluation
+The test dataset is used to evaluate the performance of both models. For an accurate comparison we compute the F1-score (harmonic mean of precision and recall).
+
+```
+ for inputs, labels in test_loader:
+        
+        inputs = inputs.to(device='cuda')
+        labels = labels.to(device='cuda')
+
+        outputs_pretrained = torch.softmax(pretrained_model(inputs), dim = 1)
+        outpouts_model = torch.softmax(model(inputs), dim = 1)
+
+        _, predicted_pretrained = torch.max(outputs_pretrained, 1)
+        _, predicted_model = torch.max(outpouts_model, 1)
+
+        true_labels.extend(labels.cpu().numpy())
+        preds_pretrained.extend(predicted_pretrained.cpu().numpy())
+        preds_model.extend(predicted_model.cpu().numpy())
+
+    true_labels = np.array(true_labels)
+    preds_pretrained = np.array(preds_pretrained)
+    preds_model = np.array(preds_model)
+
+    f1_pretrained = f1_score(true_labels, preds_pretrained, average='weighted')
+    f1_model = f1_score(true_labels, preds_model, average='weighted')
+
+    print("F1-Score (Pretrained Model):", f1_pretrained)
+    print("F1-Score (BirdCNN Model):", f1_model)
+```
+**Output**:\
+F1-Score (Pretrained Model): 0.9586968027622187
+F1-Score (BirdCNN Model): 0.9522995276329483
