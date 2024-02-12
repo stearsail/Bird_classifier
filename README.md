@@ -146,5 +146,5 @@ The test dataset is used to evaluate the performance of both models. For an accu
     print("F1-Score (BirdCNN Model):", f1_model)
 ```
 **Output**:\
-F1-Score (Pretrained Model): 0.9586968027622187
+F1-Score (Pretrained Model): 0.9586968027622187\
 F1-Score (BirdCNN Model): 0.9522995276329483
