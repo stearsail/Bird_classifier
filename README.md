@@ -29,16 +29,46 @@ Several transformations were applied to the dataset to optimize model performanc
         transforms.Resize((224,224)),
         transforms.ToTensor(),
         ])`
-`}`\
+`}`
 
 The data is then divided into training, validation and test sets with DataLoader instances to allow batch processing and data shuffling for the training and validation phases, and orderly processing in the test phase.
 
 `train_set = CustomDataset(train_subset, transform=data_transforms['train'])`\
 `val_set = CustomDataset(val_subset, transform=data_transforms['valid'])`\
-`test_set = CustomDataset(test_subset, transform=data_transforms['test'])`\
+`test_set = CustomDataset(test_subset, transform=data_transforms['test'])`
 
 `train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True,drop_last=True, num_workers=4)`\
 `val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=True,drop_last=True, num_workers=4)`\
-`test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=False, num_workers=4)`\
+`test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=False, num_workers=4)`
 
+## Models
+### Custom CNN Model (BirdCNN)
+The custom CNN Model, features a sequential architecture that includes multiple convolutional layers
 
+`class BirdCNN(nn.Module):
+    def __init__(self, num_classes):
+        super().__init__()`\
+        `self.conv1 = nn.Conv2d(in_channels=3 , out_channels=16, kernel_size=(3,3), stride=(2,2), padding=(1,1))`\
+        `self.pool1 = nn.MaxPool2d(kernel_size=(2,2),stride=(2,2))`\
+        `self.dropout1 = nn.Dropout(p=0.1)`\
+        `self.bn1 = nn.BatchNorm2d(16)`\
+
+        `self.conv2 = nn.Conv2d(in_channels=16 , out_channels=32, kernel_size=(3,3), stride=(1,1),padding='same')`\
+        `self.pool2 = nn.MaxPool2d(kernel_size=(2,2),stride=(2,2))`\
+        `self.dropout2 = nn.Dropout(p=0.1)`\
+        `self.bn2 = nn.BatchNorm2d(32)`\
+
+        `self.conv3 = nn.Conv2d(in_channels=32 , out_channels=64, kernel_size=(3,3), stride=(1,1),padding='same')`\
+        `self.pool3 = nn.MaxPool2d(kernel_size=(2,2),stride=(2,2))`\
+        `self.dropout3 = nn.Dropout(p=0.1)`\
+        `self.bn3 = nn.BatchNorm2d(64)`\
+
+        `self.conv4 = nn.Conv2d(in_channels=64 , out_channels=128, kernel_size=(3,3), stride=(1,1),padding='same')`\
+        `self.pool4 = nn.MaxPool2d(kernel_size=(2,2),stride=(2,2))`\
+        `self.dropout4 = nn.Dropout(p=0.1)`\
+        `self.bn4 = nn.BatchNorm2d(128)`\ 
+
+        `self.fc1 = nn.Linear(128*7*7,512)`\
+        `self.bn5 = nn.BatchNorm1d(512)`
+        `self.dropout5 = nn.Dropout(p=0.3)`\
+        `self.fc2 = nn.Linear(512,num_classes)`\
