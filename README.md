@@ -20,12 +20,12 @@ Several transformations were applied to the dataset to optimize model performanc
         transforms.ColorJitter(),
         ], p=0.5),
         transforms.ToTensor(),
-        ]),
-        'valid': transforms.Compose([
+        ]),`
+        `'valid': transforms.Compose([
         transforms.Resize((224,224)),
         transforms.ToTensor(),
-        ]),
-        'test':transforms.Compose([
+        ]),`
+        `'test':transforms.Compose([
         transforms.Resize((224,224)),
         transforms.ToTensor(),
         ])
