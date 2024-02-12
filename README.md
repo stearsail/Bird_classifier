@@ -43,33 +43,49 @@ The data is then divided into training, validation and test sets with DataLoader
 
 ## Models
 ### Custom CNN Model (BirdCNN)
-The custom CNN Model, features a sequential architecture that includes multiple convolutional layers
+The custom CNN Model, features a sequential architecture that includes multiple convolutional layers that escalate in complexity and depth. 
+We incorporate ReLU acitvation for non-linearity, dropout for regularization and batch normalization to accelerate training.
 
-`class BirdCNN(nn.Module):
-    def __init__(self, num_classes):
-        super().__init__()`\
-        
-        `self.conv1 = nn.Conv2d(in_channels=3 , out_channels=16, kernel_size=(3,3), stride=(2,2), padding=(1,1))`
-        `self.pool1 = nn.MaxPool2d(kernel_size=(2,2),stride=(2,2))`
-        `self.dropout1 = nn.Dropout(p=0.1)`
-        `self.bn1 = nn.BatchNorm2d(16)`
+`self.conv1 = nn.Conv2d(in_channels=3 , out_channels=16, kernel_size=(3,3), stride=(2,2), padding=(1,1))`
+`self.pool1 = nn.MaxPool2d(kernel_size=(2,2),stride=(2,2))`
+`self.dropout1 = nn.Dropout(p=0.1)`
+`self.bn1 = nn.BatchNorm2d(16)`
 
-        `self.conv2 = nn.Conv2d(in_channels=16 , out_channels=32, kernel_size=(3,3), stride=(1,1),padding='same')`
-        `self.pool2 = nn.MaxPool2d(kernel_size=(2,2),stride=(2,2))`
-        `self.dropout2 = nn.Dropout(p=0.1)`
-        `self.bn2 = nn.BatchNorm2d(32)`
+`self.conv2 = nn.Conv2d(in_channels=16 , out_channels=32, kernel_size=(3,3), stride=(1,1),padding='same')`
+`self.pool2 = nn.MaxPool2d(kernel_size=(2,2),stride=(2,2))`
+`self.dropout2 = nn.Dropout(p=0.1)`
+`self.bn2 = nn.BatchNorm2d(32)`
 
-        `self.conv3 = nn.Conv2d(in_channels=32 , out_channels=64, kernel_size=(3,3), stride=(1,1),padding='same')`
-        `self.pool3 = nn.MaxPool2d(kernel_size=(2,2),stride=(2,2))`
-        `self.dropout3 = nn.Dropout(p=0.1)`
-        `self.bn3 = nn.BatchNorm2d(64)`
+`self.conv3 = nn.Conv2d(in_channels=32 , out_channels=64, kernel_size=(3,3), stride=(1,1),padding='same')`
+`self.pool3 = nn.MaxPool2d(kernel_size=(2,2),stride=(2,2))`
+`self.dropout3 = nn.Dropout(p=0.1)`
+`self.bn3 = nn.BatchNorm2d(64)`
 
-        `self.conv4 = nn.Conv2d(in_channels=64 , out_channels=128, kernel_size=(3,3), stride=(1,1),padding='same')`
-        `self.pool4 = nn.MaxPool2d(kernel_size=(2,2),stride=(2,2))`
-        `self.dropout4 = nn.Dropout(p=0.1)`
-        `self.bn4 = nn.BatchNorm2d(128)`
+`self.conv4 = nn.Conv2d(in_channels=64 , out_channels=128, kernel_size=(3,3), stride=(1,1),padding='same')`
+`self.pool4 = nn.MaxPool2d(kernel_size=(2,2),stride=(2,2))`
+`self.dropout4 = nn.Dropout(p=0.1)`
+`self.bn4 = nn.BatchNorm2d(128)`
 
-        `self.fc1 = nn.Linear(128*7*7,512)`
-        `self.bn5 = nn.BatchNorm1d(512)`
-        `self.dropout5 = nn.Dropout(p=0.3)`
-        `self.fc2 = nn.Linear(512,num_classes)`
+`self.fc1 = nn.Linear(128*7*7,512)`
+`self.bn5 = nn.BatchNorm1d(512)`
+`self.dropout5 = nn.Dropout(p=0.3)`
+`self.fc2 = nn.Linear(512,num_classes)`
+
+### Pretrained CNN Model (EfficientNetB0)
+EfficientNetB0 is acclaimed for its efficiency in classifying over 1000 different object categories, proving to be suitable for comparison with the custom CNN. We freeze the original model's weights and add a custom classifier (top layer) comprising a linear layer, ReLU activation, batch normalization and dropout. This allows for fine-tuning, as we do not modify the weights of any layers other than the newly added top layer 
+
+`model = models.efficientnet_b0(weights='DEFAULT')`
+
+`for param in model.parameters():
+    param.requires_grad = False`
+
+`num_features = model.classifier[1].in_features`
+
+`model.classifier = nn.Sequential(
+    nn.Linear(in_features=num_features,
+              out_features=512),
+    nn.ReLU(),
+    nn.BatchNorm1d(512),
+    nn.Dropout(0.3),
+    nn.Linear(in_features=512, out_features=525)
+)`
